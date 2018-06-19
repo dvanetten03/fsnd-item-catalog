@@ -1,15 +1,15 @@
 from flask import Flask
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker
 
 app = Flask(__name__)
 
-engine = create_engine('sqlite://itemcatalog.db')
-Base.metadata.bind = engine
+# engine = create_engine('sqlite://itemcatalog.db')
+# Base.metadata.bind = engine
 
 # Add additional configuration to an existing sessionmaker() according to sqlalchemy
-DBSession = sessionmaker(bind=engine)
-session = DBSession
+# DBSession = sessionmaker(bind=engine)
+# session = DBSession
 
 # Show all catalog categories
 @app.route('/')
@@ -34,23 +34,23 @@ def deleteCategory():
 
 # Show a category's items
 @app.route('/catalog/<int:category_id>')
-@app.route('/catalog/<int:category_id'/items)
+@app.route('/catalog/<int:category_id>/items')
 def showItems():
 	return "This page is the item list for category %s" %category_id
 
 # Make a new item for a category
 @app.route('/catalog/<int:category_id>/item/new', methods = ['GET', 'POST'])
-def newItem():
+def newCategoryItem():
 	return "This page is for making a new item for a category %s" %category_id
 
 # Edit a category item
 @app.route('/catalog/<int:category_id>/item/<int:item_id>/edit')
-def editItem():
+def editCategoryItem():
 	return "This page is for editing category item %s" %item_id
 
 # Delete a category item
 @app.route('/catalog/<int:category_id>/item/<int:item_id>/delete')
-def deleteItem():
+def deleteCategoryItem():
 	return "This page is for deleting category item %s" %item_id
 
 
