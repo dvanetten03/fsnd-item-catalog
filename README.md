@@ -8,6 +8,7 @@ Items needed to be installed (or are already installed):
 - OAuth 2.0
 - Vagrant
 - Virtualbox
+- httplib2
 
 Project needs to exceed minimum requirements set up in the project rubric:
 
