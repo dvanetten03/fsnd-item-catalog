@@ -15,8 +15,8 @@ class User(Base):
 	email = Column(String(250), nullable=False)
 	picture = Column(String(250))
 
-class Catalog(Base):
-	__tablename__ = 'catalog'
+class Category(Base):
+	__tablename__ = 'category'
 
 	id = Column(Integer, primary_key=True)
 	name = Column(String(250), nullable=False)
@@ -31,20 +31,21 @@ class Catalog(Base):
 		'user_id'	:self.user.id
 		}
 
-class Category(Base):
-	__tablename__ = 'category'
+class Item(Base):
+	__tablename__ = 'item'
 
 	id = Column(Integer, primary_key=True)
 	name = Column(String(80), nullable=False)
 	description = Column(String(250))
+	category_id = Column(Integer, ForeignKey('category.id'))
 	user_id = Column(Integer, ForeignKey('user.id'))
-	catalog = relationship(Catalog)
+	category = relationship(Category)
 	user = relationship(User)
 
 	@property
 	def serialize(self):
 		return{
-		'name'			:self.name,
+		'category'		:self.category.name,
 		'description'	:self.description,
 		'id'			:self.id
 		}
