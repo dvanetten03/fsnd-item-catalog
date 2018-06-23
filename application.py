@@ -1,15 +1,17 @@
-from flask import Flask, render_template
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import sessionmaker
+from flask import Flask, render_template, url_for, request
+from flask import jsonify, flash, redirect, make_response
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.ext.declarative import declarative_base
 
 app = Flask(__name__)
 
-# engine = create_engine('sqlite://itemcatalog.db')
-# Base.metadata.bind = engine
+engine = create_engine('sqlite:///itemcatalog.db')
+Base.metadata.create_all(engine)
 
-# Add additional configuration to an existing sessionmaker() according to sqlalchemy
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession
+Add additional configuration to an existing sessionmaker() according to sqlalchemy
+DBSession = sessionmaker(bind=engine)
+session = DBSession
 
 # Show all catalog categories
 @app.route('/')
