@@ -113,6 +113,45 @@ def gconnect():
 	login_session['user_id'] = user_id
 	login_session['provider'] = 'google'
 
+	output = ''
+	output += '<h1>Welcome, '
+	output += login_session['username']
+
+	output += '!</h1>'
+	output += '<img src="'
+	output += login_session['picture']
+	output += ' "style = "width: 300px; height: 300px; border-radius: 150px; -webkit-border-radius: 150px; -moz-border-radius: 150px;">'
+	flash("you are now logged in as %s" %login_session['username'])
+	print ("done!")
+	return output
+
+#DISCONNECT - Revoke a current user's token and reset their login_session
+@app.route('/gdisconnect/')
+def gdisconnect():
+	#Only disconnect a connected user
+	credentials = login_session.get('credentials')
+	if credentials is None:
+		response = make_response(json.dumps('Current user not connected.'), 401)
+		response.headers['Content-Type'] = 'application/json'
+		return response
+		#Execute HTTP GET request to revoke current token.
+		access_token = credentials.access_token
+		url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' %access_token
+		h = httplib2.Http()
+		result = h.request(url, 'GET')[0]
+
+	if result['status'] == '200':
+		#Reset the user's session.
+		response = make_response(json.dumps('Successfully disconnected.'), 200)
+		response.headers['Content-Type'] = 'application/json'
+		return response
+	else:
+		# For whatever reason, the given token was invalid.
+		response = make_response(
+			json.dumps('Failed to revoke token for given user.'), 400)
+		response.headers['Content-Type'] = 'application/json'
+		return response
+
 # Show all catalog categories
 @app.route('/')
 @app.route('/catalog')
