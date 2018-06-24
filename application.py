@@ -189,6 +189,68 @@ def fbconnect():
 
 	#Get user picture
 	url = "https://graph.facebook.com/v2.8/me/picture?%s&redirect=0&height=200&width=200" % token
+	h = httplib2.Http()
+	result = h.request(url, 'GET')[1]
+	data = json.loads(result)
+
+	login_session['picture'] = data["data"]["url"]
+
+	# See if a user exists, if it doesn't, make a new one
+	user_id = getUserID(login_session['email'])
+	if not user_id:
+		user_id - createUser(login_session)
+	login_session['user_id'] = user_id
+
+	output = ''
+	output += '<h1> Welcome, '
+	output =+ login_session['username']
+
+	output += '!</h1>'
+	output += '<img src="'
+	output += login_session['picture']
+	output += ' " style = "width: 300px; height: 300px; border-radius :150px; -webkit-border-radius: 150px; -moz-border-radius: 150px;">'
+	flash("you are now logged in as %s" %login_session['username'])
+	return output
+
+#Disconnect from fblogin
+@app.route('/fbdisconnect')
+def fbdisconnect():
+	facebook_id = login_session['facebook_id']
+	access_token = login_session['access_token']
+	url = 'https://graph.facebook.com/%s/permissions' % (facebook_id, access_token)
+	h = httplib2.Http()
+	result = h.request(url, 'DELETE')[1]
+	return "You have been logged out"
+
+@app.route('/disconnect')
+def disconnect():
+	if 'provider' in login_session:
+		if login_session['provider'] == 'google':
+			gdisconnect()
+			del login_session['g_id']
+			del login_session['credentials']
+		if login_session['provider'] == 'facebook':
+			fbdisconnect()
+			del login_session['facebook_id']
+
+		del login_session['username']
+		del login_session['email']
+		del login_session['picture']
+		del login_session['user_id']
+		del login_session['provider']
+		flash ("You have successfully been logged out.")
+		return redirect(url_for('showCatalog'))
+	else:
+		flash("You were not logged in to begin with!")
+		redirect(url_for('showCatalog'))
+
+#JSON APIs to view Catalog Information
+@app.route('/catalog/<int: category_id>/category/JSON')
+def catalogCategoryJSON(category_id):
+	catalog = session.query(Catalog).filter_by(id = category_id).one()
+	items = session.query(categoryItem).filter_by(category_id = category_id).all()
+	return jsonify(CategoryItems=[i.serialize for i in items])
+
 
 # Show all catalog categories
 @app.route('/')
