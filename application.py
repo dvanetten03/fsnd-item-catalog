@@ -27,7 +27,7 @@ Base.metadata.create_all(engine)
 
 #Add additional configuration to an existing sessionmaker() according to sqlalchemy
 DBSession = sessionmaker(bind=engine)
-session = DBSession
+session = DBSession()
 
 # Creating anti-forgery state token
 @app.route('/login')
@@ -312,6 +312,8 @@ def deleteCategoryItem():
 	#return "This page is for deleting category item %s" %item_id
 	return render_template('deletecategoryitem.html')
 
+
+
 # User Helper functions
 def createUser(login_session):
 	newUser = User(username=login_session['username'], email=login_session['email'], picture=login_session['picture'])
@@ -329,6 +331,8 @@ def getUserID(email):
 		return user.id
 	except NoResultFound:
 		return None
+
+
 
 
 if __name__ == '__main__':
