@@ -1,4 +1,4 @@
-###Item catalog project for Udacity Fullstack Nanodegree that integrates 3rd party user registration and authentication. Users can create, read, update and delete (CRUD) items.
+### Item catalog project for Udacity Fullstack Nanodegree that integrates 3rd party user registration and authentication. Users can create, read, update and delete (CRUD) items.
 
 Items needed to be installed (or are already installed):
 

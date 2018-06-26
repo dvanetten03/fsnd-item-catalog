@@ -7,8 +7,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 import httplib2
-import random
-import string
+import random, string
 import json
 import requests
 
@@ -23,7 +22,7 @@ APPLICATION_NAME = "Item Catalog Application"
 
 # Connect to database
 engine = create_engine('sqlite:///itemcatalog.db')
-Base.metadata.create_all(engine)
+Base.metadata.bind(engine)
 
 #Add additional configuration to an existing sessionmaker() according to sqlalchemy
 DBSession = sessionmaker(bind=engine)
