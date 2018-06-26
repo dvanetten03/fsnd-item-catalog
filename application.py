@@ -6,6 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
+from database_setup import Base, Category, Item, User
+
 import httplib2
 import random, string
 import json
@@ -22,7 +24,7 @@ APPLICATION_NAME = "Item Catalog Application"
 
 # Connect to database
 engine = create_engine('sqlite:///itemcatalog.db')
-Base.metadata.bind(engine)
+Base.metadata.bind=engine
 
 #Add additional configuration to an existing sessionmaker() according to sqlalchemy
 DBSession = sessionmaker(bind=engine)
@@ -244,13 +246,13 @@ def disconnect():
 		redirect(url_for('showCatalog'))
 
 #JSON APIs to view Catalog Information
-@app.route('/catalog/<int: category_id>/category/JSON')
+@app.route('/catalog/<int:category_id>/category/JSON/')
 def catalogCategoryJSON(category_id):
 	catalog = session.query(Catalog).filter_by(id = category_id).one()
 	items = session.query(categoryItem).filter_by(category_id = category_id).all()
 	return jsonify(CategoryItems=[i.serialize for i in items])
 
-@app.route('/catalog/<int: category_id>/category/<int: item_id>/JSON')
+@app.route('/catalog/<int:category_id>/category/<int:item_id>/JSON')
 def categoryItemJSON(category_id, item_id):
 	CategoryItem = session.query(CategoryItem).filter_by(id = item_).one()
 	return jsonify(CategoryItem = CategoryItem.serialize)
