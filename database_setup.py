@@ -15,6 +15,17 @@ class User(Base):
 	email = Column(String(250), nullable=False)
 	picture = Column(String(250))
 
+	@property
+	def serialize(self):
+		# Returns object data in easily serializable format
+		return {
+		'id' 		:self.id,
+		'name'		:self.name,
+		'email'		:self.email,
+		'picture'	:self.picture
+		}
+	
+
 class Category(Base):
 	__tablename__ = 'category'
 
@@ -25,7 +36,8 @@ class Category(Base):
 
 	@property
 	def serialize(self):
-		return{
+		# Returns object data in easily serializable forma
+		return {
 		'name'		:self.name,
 		'id'		:self.id,
 		'user_id'	:self.user.id
@@ -44,13 +56,14 @@ class Item(Base):
 
 	@property
 	def serialize(self):
-		return{
+		# Returns object data in easily serializable forma
+		return {
 		'category'		:self.category.name,
 		'description'	:self.description,
 		'id'			:self.id
 		}
 
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('sqlite:///itemcatalog.db')
 
 Base.metadata.create_all(engine)
 	

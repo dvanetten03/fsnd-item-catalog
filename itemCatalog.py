@@ -17,7 +17,7 @@ session.add(user1)
 session.commit()
 
 #Create temp categories
-category1 = Category(name="routers")
+category1 = Category(name="routers", user_id=1)
 session.add(category1)
 session.commit()
 
