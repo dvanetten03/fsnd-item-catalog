@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+# Table for User Information
 class User(Base):
 	__tablename__ = 'user'
 
@@ -15,17 +16,7 @@ class User(Base):
 	email = Column(String(250), nullable=False)
 	picture = Column(String(250))
 
-	@property
-	def serialize(self):
-		# Returns object data in easily serializable format
-		return {
-		'id' 		:self.id,
-		'name'		:self.name,
-		'email'		:self.email,
-		'picture'	:self.picture
-		}
-	
-
+# Table for Category Information
 class Category(Base):
 	__tablename__ = 'category'
 
@@ -39,11 +30,13 @@ class Category(Base):
 	def serialize(self):
 		# Returns object data in easily serializable forma
 		return {
-		'name'		:self.name,
-		'id'		:self.id,
-		'user_id'	:self.user.id
+		'name'			:self.name,
+		'id'			:self.id,
+		'user_id'		:self.user.id,
+		'description'	:self.description,
 		}
 
+# Table for Item Information
 class Item(Base):
 	__tablename__ = 'item'
 
