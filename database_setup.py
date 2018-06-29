@@ -33,7 +33,7 @@ class Category(Base):
 		'name'			:self.name,
 		'id'			:self.id,
 		'user_id'		:self.user.id,
-		'description'	:self.description,
+		'description'	:self.description
 		}
 
 # Table for Item Information
